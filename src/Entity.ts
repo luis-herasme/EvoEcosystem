@@ -1,6 +1,6 @@
 import Vector from './Vector'
 
-class Entity { 
+export default class Entity { 
  
   public carnivore : boolean
   public vegetarian : boolean
@@ -75,6 +75,10 @@ class Entity {
         }
       }
     })
+  }
+
+  eat(entity){
+
   }
 
   moveRandom(){
