@@ -21,7 +21,7 @@ export default class World {
 
   public render
 
-  public Entities: Array<Entity>
+  public entities: Array<Entity>
 
   constructor (
     resolution = [3, 3],
@@ -52,7 +52,7 @@ export default class World {
     for (let x = 0; x <= this.resolution[0]; x++) {
       this.enviroments.push([])
       for (let y = 0; y <= this.resolution[1]; y++) {
-        this.enviroments[x].push(new Enviroment(x, y))
+        this.enviroments[x].push(new Enviroment(x, y, this))
       }
     }
   }
@@ -81,8 +81,19 @@ export default class World {
     }
   }
 
+  add (child: Entity) {
+    this.render.add(child.circle)
+    this.entities.push(child)
+  }
+
+  remove (child :Entity) {
+    this.render.remove(child.circle)
+    this.entities.splice(this.entities.indexOf(child), 1)
+  }
+
   update (): void {
-    this.Entities.forEach((entity) => {
+    this.render.render()
+    this.entities.forEach((entity) => {
       this.insideWorldBounds(entity)
       this.organizeParticle(entity)
     })

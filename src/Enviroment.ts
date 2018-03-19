@@ -1,14 +1,17 @@
+
 import Entity from "./Entity"
+import World from "./World"
 
 export default class Enviroment {
   public x: number
   public y: number
-
+  public world        : World
   public trees        : Array<Entity>
   public vegetarians  : Array<Entity>
   public carnivorous  : Array<Entity>
 
-  constructor (x, y) {
+  constructor (x, y, world) {
+    this.world = world
     this.x = x
     this.y = y
   }

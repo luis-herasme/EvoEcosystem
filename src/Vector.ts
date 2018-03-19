@@ -131,6 +131,10 @@ class Vector {
       return new Vector(-x * Math.random(), -y * Math.random())
     }
   }
+
+  static randomPositive (x: number, y: number): Vector {
+    return new Vector(x * Math.random(), y * Math.random())
+  }
 }
 
 export default Vector
