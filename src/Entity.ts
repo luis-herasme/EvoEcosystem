@@ -78,7 +78,7 @@ export default class Entity {
   }
 
   eat(entity){
-
+    
   }
 
   moveRandom(){
