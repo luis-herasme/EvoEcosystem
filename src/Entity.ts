@@ -1,4 +1,5 @@
 import Vector from './Vector'
+import Enviroment from './Enviroment';
 
 export default class Entity { 
  
@@ -14,7 +15,7 @@ export default class Entity {
   private calConsumption : number
   public foodLevel : number 
   public position :Vector
-  public environment 
+  public environment :Enviroment
  
   constructor (properties) { 
     if(properties.first == true){ 
@@ -57,11 +58,11 @@ export default class Entity {
   }
   
   see () {
-    this.environment.Entities.forEach(element => {
-      let near = this.findNearest(this.environment.Plants)
-  
-      let nearPeligro = this.findNearest(this.environment.carnivoros) 
-       
+    if(this.vegetarian){
+      let near = this.findNearest(this.environment.trees)
+
+      let nearPeligro = this.findNearest(this.environment.carnivorous) 
+        
       if (nearPeligro.distance < this.fieldVision) {
         this.position.moveTowards(nearPeligro.entity, -1 * this.speed, 0)
       } else {
@@ -74,10 +75,11 @@ export default class Entity {
           this.moveRandom()
         }
       }
-    })
+    }
   }
 
   eat(entity){
+    this.environment.remove(entity)
     this.foodLevel += 50
   }
 
