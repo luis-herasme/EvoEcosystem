@@ -1,7 +1,9 @@
 
 class Entity { 
  
-  public isCarnivoir : boolean 
+  public carnivore : boolean
+  public tree : boolean
+  public vegetarian : boolean
   public speed : number 
   public fertility : number 
   public fieldVision : number[] 
@@ -23,7 +25,10 @@ class Entity {
       this.fertility = properties.fertility; 
       this.fieldVision = properties.fieldVision; 
       this.lifetime = properties.lifetime; 
-      this.sizeLimit = properties.sizeLimit;  
+      this.sizeLimit = properties.sizeLimit;
+      this.carnivore = properties.carnivore;
+      this.tree = properties.tree;
+      this.vegetarian = properties.vegetarian;
     }else{ 
       this.generatingChild(properties.parents) 
     } 
