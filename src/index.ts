@@ -8,3 +8,5 @@ const world = new World()
 for (let i = 0; i < 100; i++) {
   world.add(new Plant())
 }
+
+setInterval(() => world.update())

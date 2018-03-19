@@ -12,7 +12,7 @@ export default class Entity {
   public sizeLimit : number
   public speedLimit : number 
   private calConsumption : number 
- 
+
   public position :Vector
   public environment 
  

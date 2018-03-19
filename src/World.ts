@@ -1,7 +1,9 @@
 
 import Enviroment from './Enviroment'
-import dibujo from 'dibujo'
+import * as dibujo from './dibujo/index'
 import Entity from './Entity'
+
+console.log(dibujo)
 
 export default class World {
   public limitSpeed     :number     
@@ -11,7 +13,7 @@ export default class World {
   public limitFertility :number
 
   public enviroments    :Array<Array<Enviroment>> = []
-  public resolution     :Array<number>
+  public resolution     :Array<number>  = []
 
   public maxPositionX
   public maxPositionY
@@ -21,7 +23,7 @@ export default class World {
 
   public render
 
-  public entities: Array<Entity>
+  public entities  = []//: Array<Entity> = []
 
   constructor (
     resolution = [3, 3],
@@ -35,9 +37,11 @@ export default class World {
     this.render = new dibujo.Render()
 
     let size = {
-      x: this.render.getHeight(),
-      y: this.render.getWidth()
+      x: 500/*this.render.getHeight()*/,
+      y: 500// this.render.getWidth()
     }
+
+    console.log(size)
 
     this.limitSpeed     = limitSpeed
     this.limitSize      = limitSize
@@ -61,8 +65,12 @@ export default class World {
     const positionX = Math.floor((particle.position.x / this.maxPositionX) * this.resolution[0])
     const positionY = Math.floor((particle.position.y / this.maxPositionY) * this.resolution[1])
 
-    if (particle.enviroment.x !== positionX || particle.enviroment.y !== positionY) {
-      particle.enviroment.remove(particle)
+    if (particle.environment) {
+      if (particle.environment.x !== positionX || particle.environment.y !== positionY) {
+        particle.environment.remove(particle)
+        this.enviroments[positionX][positionY].add(particle)
+      }
+    } else {
       this.enviroments[positionX][positionY].add(particle)
     }
   }
@@ -81,12 +89,27 @@ export default class World {
     }
   }
 
-  add (child: Entity) {
+  isInsideWorldBounds (particle) {
+    if (particle.position.x > this.maxPositionX) {
+      return false
+    } else if (particle.position.x < this.minPositionX) {
+      return false
+    }
+
+    if (particle.position.y > this.maxPositionY) {
+      return false
+    } else if (particle.position.y < this.minPositionY) {
+      return false
+    }
+    return true
+  }
+
+  add (child) {
     this.render.add(child.circle)
     this.entities.push(child)
   }
 
-  remove (child :Entity) {
+  remove (child) {
     this.render.remove(child.circle)
     this.entities.splice(this.entities.indexOf(child), 1)
   }
@@ -96,6 +119,7 @@ export default class World {
     this.entities.forEach((entity) => {
       this.insideWorldBounds(entity)
       this.organizeParticle(entity)
+      entity.update()
     })
   }
 }
