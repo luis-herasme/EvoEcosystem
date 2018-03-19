@@ -11,7 +11,8 @@ export default class Entity {
   public size : number 
   public sizeLimit : number
   public speedLimit : number 
-  private calConsumption : number 
+  private calConsumption : number
+  public foodLevel : number 
  
   public position :Vector
   public environment 
@@ -78,7 +79,7 @@ export default class Entity {
   }
 
   eat(entity){
-    
+    this.foodLevel += 50
   }
 
   moveRandom(){
