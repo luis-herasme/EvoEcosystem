@@ -10,7 +10,7 @@ export default class Plant {
   public maxSize    : number = 10
   public circle
 
-  constructor (position) {
+  constructor (position?) {
     if (position) {
       this.position = position
     } else {
