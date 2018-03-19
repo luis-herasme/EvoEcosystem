@@ -17,6 +17,11 @@
   },
   "homepage": "https://github.com/LuisHerasme/EvoEcosystem#readme",
   "dependencies": {
-    "dibujo": "^5.0.8"
+    "dibujo": "^5.0.8",
+    "ts-loader": "^4.1.0",
+    "typescript": "^2.7.2",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12",
+    "webpack-dev-server": "^3.1.1"
   }
 }
