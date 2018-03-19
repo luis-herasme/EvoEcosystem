@@ -1,5 +1,6 @@
 import Vector from './Vector'
 import Enviroment from './Enviroment';
+import * as dibujo from './dibujo/index'
 
 export default class Entity { 
  
@@ -14,8 +15,11 @@ export default class Entity {
   public speedLimit : number 
   private calConsumption : number
   public foodLevel : number 
+ 
   public position :Vector
   public environment :Enviroment
+
+  public circle
  
   constructor (properties) { 
     if(properties.first == true){ 
@@ -31,6 +35,12 @@ export default class Entity {
       this.generatingChild(properties.parents) 
     }
     this.environment = properties.environment;
+    this.circle = new dibujo.Circle({
+      position : this.position,
+      radius : this.size,
+      color : "red",
+      fill : true
+    })
   } 
   generatingChild(parents){ 
     let rand_mut = Math.random(); 
@@ -58,29 +68,35 @@ export default class Entity {
   }
   
   see () {
+    let nearPeligro
+    let near
     if(this.vegetarian){
-      let near = this.findNearest(this.environment.trees)
+      near = this.findNearest(this.environment.trees)
 
-      let nearPeligro = this.findNearest(this.environment.carnivorous) 
-        
-      if (nearPeligro.distance < this.fieldVision) {
-        this.position.moveTowards(nearPeligro.entity, -1 * this.speed, 0)
-      } else {
-        if (near.distance < this.fieldVision) {
-          this.position.moveTowards(near.entity, this.speed, 0)
-          if (near.distance < this.size + near.entity.size) {
-            this.eat(near.entity)
-          }
-        } else {
-          this.moveRandom()
+      nearPeligro = this.findNearest(this.environment.carnivorous) 
+    }else{
+      near = this.findNearest(this.environment.carnivorous.filter((x)=>x.size<this.size))
+
+      nearPeligro = this.findNearest(this.environment.carnivorous.filter((x) => x.size > this.size))
+    }
+    if (nearPeligro.distance < this.fieldVision) {
+      this.position.moveTowards(nearPeligro.entity, -1 * this.speed, 0)
+    } else {
+      if (near.distance < this.fieldVision) {
+        this.position.moveTowards(near.entity, this.speed, 0)
+        if (near.distance < this.size + near.entity.size) {
+          this.eat(near.entity)
         }
+      } else {
+        this.moveRandom()
       }
     }
   }
 
   eat(entity){
+    this.foodLevel += (entity.size/this.environment.world.limitSize)*25
     this.environment.remove(entity)
-    this.foodLevel += 50
+    
   }
 
   moveRandom(){
@@ -88,5 +104,14 @@ export default class Entity {
     direction.normalize();
     direction.mult(this.size*2)
     this.position.moveTowards(direction, -1 * this.speed, 0)
+  }
+
+  dayPassed(){
+
+  }
+
+  update(){
+    this.circle.radius = this.size;
+    this.see();
   }
 } 
