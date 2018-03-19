@@ -9,5 +9,13 @@ export default class Enviroment {
     this.x = x
     this.y = y
   }
+
+  add (child :Entity) {
+    this.Entities.push(child)
+  }
+
+  remove (child :Entity) {
+    this.Entities.splice(this.Entities.indexOf(child), 1)
+  }
 }
 
