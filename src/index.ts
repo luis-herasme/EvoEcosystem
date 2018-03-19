@@ -8,8 +8,7 @@ function findNearest (population) {
   let distances = relativo.map((e) => e.mag())
 
   let distance  = Math.min(...relativo)
-  let index     = distances.indexOf(distance)
-  let entity    = population[index]
+  let entity    = population[distances.indexOf(distance)]
 
   return {
     distance,
@@ -21,6 +20,24 @@ function findNearest (population) {
 function see () {
   this.enviroment.Entities.forEach(element => {
     let near = this.findNearest(this.enviroment.Plants)
-    this.position.moveTowards(near.entity)
+
+    let nearPeligro = this.findNearest(this.enviroment.Carnivoros) 
+     
+    if (nearPeligro.distance < this.fieldOfVision) {
+      this.position.moveTowards(near.entity, -1 * this.speed)  
+
+      if (nearPeligro.distance < this.size + near.entity.size) {
+        this.eat(near.entity)
+      }
+    } else {
+      if (near.distance < this.fieldOfVision) {
+        this.position.moveTowards(near.entity, this.speed)
+      }
+    
+      if (near.distance < this.size + near.entity.size) {
+        this.eat(near.entity)
+      }
+    }
+
   })
 }
