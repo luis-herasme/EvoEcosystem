@@ -26,7 +26,7 @@ export default class Plant {
 
   update () {
     this.grow()
-    if (Math.random() < 0.0005) this.haveChild()
+    if (Math.random() < 0.00025) this.haveChild()
     if (this.size > this.maxSize) {
       this.haveChild()
       this.haveChild()
@@ -40,7 +40,7 @@ export default class Plant {
   }
 
   grow () {
-    this.size += 0.0025
+    this.size += 0.005
   }
 
   haveChild () {

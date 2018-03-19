@@ -30,11 +30,11 @@ export default class Enviroment {
 
   remove (child) {
     if (child.vegetarian) {
-      this.vegetarians.splice(this.trees.indexOf(child), 1)
+      this.vegetarians.splice(this.vegetarians.indexOf(child), 1)
     } else if (child.carnivore) {
       this.carnivorous.splice(this.carnivorous.indexOf(child), 1)
     } else {
-      this.trees.splice(this.vegetarians.indexOf(child), 1)
+      this.trees.splice(this.trees.indexOf(child), 1)
     }
   }
 }

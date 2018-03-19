@@ -65,9 +65,9 @@ export default class World {
     const positionX = Math.floor((particle.position.x / this.maxPositionX) * this.resolution[0])
     const positionY = Math.floor((particle.position.y / this.maxPositionY) * this.resolution[1])
 
-    if (particle.environment) {
-      if (particle.environment.x !== positionX || particle.environment.y !== positionY) {
-        particle.environment.remove(particle)
+    if (particle.enviroment) {
+      if (particle.enviroment.x !== positionX || particle.enviroment.y !== positionY) {
+        particle.enviroment.remove(particle)
         this.enviroments[positionX][positionY].add(particle)
       }
     } else {
