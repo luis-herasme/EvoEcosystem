@@ -63,16 +63,10 @@ class Entity {
       let nearPeligro = this.findNearest(this.environment.carnivoros) 
        
       if (nearPeligro.distance < this.fieldVision) {
-        this.position.moveTowards(near.entity, -1 * this.speed, 0)  
-  
-        if (nearPeligro.distance < this.size + near.entity.size) {
-          this.eat(near.entity)
-        }
+        this.position.moveTowards(nearPeligro.entity, -1 * this.speed, 0)
       } else {
-  
         if (near.distance < this.fieldVision) {
           this.position.moveTowards(near.entity, this.speed, 0)
-  
           if (near.distance < this.size + near.entity.size) {
             this.eat(near.entity)
           }
@@ -80,6 +74,13 @@ class Entity {
           this.moveRandom()
         }
       }
-  
     })
+  }
+
+  moveRandom(){
+    let direction = new Vector(Math.random() - 0.5, Math.random() - 0.5)
+    direction.normalize();
+    direction.mult(this.size*2)
+    this.position.moveTowards(direction, -1 * this.speed, 0)
+  }
 } 
