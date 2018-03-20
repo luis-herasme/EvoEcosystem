@@ -9,7 +9,6 @@ const world = new World()
 for (let i = 0; i < 100; i++) {
   world.add(new Plant())
   world.add(new Entity({
-    first: true,
     speedLimit: Math.random(),
     fertility: Math.random(),
     fieldVision: 100,

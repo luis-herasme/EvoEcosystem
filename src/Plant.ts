@@ -5,7 +5,7 @@ import * as dibujo from './dibujo/index'
 
 export default class Plant {
   public position   : Vector
-  public enviroment : Enviroment
+  public environment : Enviroment
   public size       : number = 1
   public maxSize    : number = 5
   public circle
@@ -36,7 +36,7 @@ export default class Plant {
   }
 
   dead () {
-    this.enviroment.world.remove(this)
+    this.environment.world.remove(this)
   }
 
   grow () {
@@ -44,7 +44,7 @@ export default class Plant {
   }
 
   haveChild () {
-    this.enviroment.world.add(
+    this.environment.world.add(
       new Plant(Vector.add(this.position, Vector.random(this.size* 5, this.size * 5)))
     )
   }
