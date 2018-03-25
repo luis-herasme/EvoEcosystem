@@ -6,7 +6,7 @@ import * as dibujo from './dibujo/index'
 export default class Plant {
   public position   : Vector
   public enviroment : Enviroment
-  public size       : number = 1
+  public size       : number = 3
   public maxSize    : number = 5
   public circle
 
@@ -20,13 +20,17 @@ export default class Plant {
     this.circle = new dibujo.Circle({
       position: this.position,
       color: 'green',
+     // stroke: true,
+     // lineColor: 'black',
+     // lineWidth: 1,
+      z_index: 2,
       radius: this.size
     })
   }
 
   update () {
     this.grow()
-    if (Math.random() < 0.00025) this.haveChild()
+    if (Math.random() < 0.01) this.haveChild()
     if (this.size > this.maxSize) {
       this.haveChild()
       this.haveChild()
@@ -36,7 +40,8 @@ export default class Plant {
   }
 
   dead () {
-    this.enviroment.world.remove(this)
+    this.enviroment.world.render.remove(this.circle)
+    this.enviroment.remove(this)
   }
 
   grow () {
@@ -44,8 +49,8 @@ export default class Plant {
   }
 
   haveChild () {
-    this.enviroment.world.add(
-      new Plant(Vector.add(this.position, Vector.random(this.size* 5, this.size * 5)))
+    this.enviroment.world.addPlant(
+      new Plant(Vector.add(this.position, Vector.random(this.size* 15, this.size * 15)))
     )
   }
 }

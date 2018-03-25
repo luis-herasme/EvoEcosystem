@@ -1,47 +1,42 @@
 
-import Enviroment from './Enviroment'
 import * as dibujo from './dibujo/index'
-import Entity from './Entity'
+import Enviroment  from './Enviroment'
+import Entity      from './Entity'
+import Point       from './dibujo/Point'
 
-console.log(dibujo)
+class World {
+  public limitSpeed     : number
+  public limitSize      : number
+  public limitVision    : number
+  public limitLifeTime  : number
+  public limitFertility : number
+  public enviromentSize : Point
+  public resolution     : Array<number>            = []
 
-export default class World {
-  public limitSpeed     :number     
-  public limitSize      :number
-  public limitVision    :number
-  public limitLifeTime  :number
-  public limitFertility :number
+  // ------------------- Fixed properties -------------------
 
-  public enviroments    :Array<Array<Enviroment>> = []
-  public resolution     :Array<number>  = []
+  public render         : dibujo.Render            = new dibujo.Render()
+  public scene          : dibujo.Scene             = new dibujo.Scene()
+  public entities       : Array<Entity>            = []
+  public enviroments    : Array<Array<Enviroment>> = []
 
-  public maxPositionX
-  public maxPositionY
-
-  public minPositionX :number = 0
-  public minPositionY :number = 0
-
-  public render
-
-  public entities  = []//: Array<Entity> = []
-
+  // World size
+  public minPositionX   : number
+  public minPositionY   : number
+  public maxPositionX   : number
+  public maxPositionY   : number
+  
   constructor (
-    resolution = [3, 3],
-    limitSpeed = 10,
     limitSize = 10,
+    limitSpeed = 10,
     limitVision = 10,
     limitLifeTime = 10,
-    limitFertility = 10
+    limitFertility = 10,
+    resolution = [10, 10],
+    enviromentSize = {x: 100, y: 100}
   ) {
-
-    this.render = new dibujo.Render()
-
-    let size = {
-      x: 500/*this.render.getHeight()*/,
-      y: 500// this.render.getWidth()
-    }
-
-    console.log(size)
+    this.render.setScene(this.scene)
+    this.enviromentSize = enviromentSize
 
     this.limitSpeed     = limitSpeed
     this.limitSize      = limitSize
@@ -50,13 +45,17 @@ export default class World {
     this.limitFertility = limitFertility
 
     this.resolution = resolution
-    this.maxPositionX = this.resolution[0] * size.x
-    this.maxPositionY = this.resolution[1] * size.y
+    this.maxPositionX = this.resolution[0] * this.enviromentSize.x
+    this.maxPositionY = this.resolution[1] * this.enviromentSize.y
 
-    for (let x = 0; x <= this.resolution[0]; x++) {
+    for (let x = 0; x <= this.resolution[0]-1; x++) {
       this.enviroments.push([])
-      for (let y = 0; y <= this.resolution[1]; y++) {
+      for (let y = 0; y <= this.resolution[1]-1; y++) {
         this.enviroments[x].push(new Enviroment(x, y, this))
+        if (x === 0) this.enviroments[x][y].limit = true
+        if (x === this.resolution[0]-1) this.enviroments[x][y].limit = true
+        if (y === 0) this.enviroments[x][y].limit = true
+        if (y === this.resolution[1]-1) this.enviroments[x][y].limit = true
       }
     }
   }
@@ -64,7 +63,6 @@ export default class World {
   organizeParticle (particle: Entity): void {
     const positionX = Math.floor((particle.position.x / this.maxPositionX) * this.resolution[0])
     const positionY = Math.floor((particle.position.y / this.maxPositionY) * this.resolution[1])
-
     if (particle.enviroment) {
       if (particle.enviroment.x !== positionX || particle.enviroment.y !== positionY) {
         particle.enviroment.remove(particle)
@@ -76,50 +74,45 @@ export default class World {
   }
 
   insideWorldBounds (particle: Entity): void {
-    if (particle.position.x > this.maxPositionX) {
-      particle.position.x = this.minPositionX
-    } else if (particle.position.x < this.minPositionX) {
-      particle.position.x = this.maxPositionX
+    if (particle.position.x >= this.maxPositionX) {
+      particle.position.x = this.minPositionX + 1
+    } else if (particle.position.x <= this.minPositionX) {
+      particle.position.x = this.maxPositionX - 1
     }
 
-    if (particle.position.y > this.maxPositionY) {
-      particle.position.y = this.minPositionY
-    } else if (particle.position.y < this.minPositionY) {
-      particle.position.y = this.maxPositionY
+    if (particle.position.y >= this.maxPositionY) {
+      particle.position.y = this.minPositionY + 1
+    } else if (particle.position.y <= this.minPositionY) {
+      particle.position.y = this.maxPositionY - 1
     }
   }
 
-  isInsideWorldBounds (particle) {
-    if (particle.position.x > this.maxPositionX) {
-      return false
-    } else if (particle.position.x < this.minPositionX) {
-      return false
-    }
-
-    if (particle.position.y > this.maxPositionY) {
-      return false
-    } else if (particle.position.y < this.minPositionY) {
-      return false
-    }
-    return true
+  addPlant (plant) {
+    this.insideWorldBounds(plant)
+    this.organizeParticle(plant)
   }
 
   add (child) {
+    if (child.text) {
+      this.render.add(child.text)
+    }
     this.render.add(child.circle)
     this.entities.push(child)
   }
 
-  remove (child) {
-    this.render.remove(child.circle)
+  remove (child): void {
     this.entities.splice(this.entities.indexOf(child), 1)
   }
 
-  update (): void {
+  update (): void {   
     this.render.render()
     this.entities.forEach((entity) => {
       this.insideWorldBounds(entity)
       this.organizeParticle(entity)
       entity.update()
     })
+    this.enviroments.forEach((en) => en.forEach((e) => e.update()))
   }
 }
+
+export default World

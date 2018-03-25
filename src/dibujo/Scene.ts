@@ -29,13 +29,10 @@ export default class Scene {
   }
 
   clear (color: string = '#000'): void {
-    this.context.fillStyle = color
-    this.context.fillRect(
-      -this.translation.x,
-      0,
-      window.innerWidth,
-      window.innerHeight
-    )
+    this.context.save()
+    this.context.setTransform(1, 0, 0, 1, 0, 0)
+    this.context.clearRect(0, 0, window.innerWidth, window.innerHeight)
+    this.context.restore()
   }
 
   follow (gameObject) {

@@ -6,7 +6,7 @@ import Graphic  from './graphics/Graphic'
 export default class Render {
   private scene   : Scene
   private canvas  : HTMLCanvasElement
-  private context : CanvasRenderingContext2D
+  public context : CanvasRenderingContext2D
   public timeFrame : number = 0
   constructor (canvas?: HTMLCanvasElement, width?: number, height?: number) {
     if (canvas) {

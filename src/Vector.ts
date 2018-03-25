@@ -19,13 +19,13 @@ class Vector {
   }
 
   mult (scalar: number): void {
-    this.x *= scalar
-    this.y *= scalar
+    this.x = this.x * scalar
+    this.y = this.y * scalar
   }
 
   div (scalar: number): void {
-    this.x /= scalar
-    this.y /= scalar
+    this.x = this.x / scalar
+    this.y = this.y / scalar
   }
 
   inverse (): void {
@@ -81,7 +81,7 @@ class Vector {
 
   moveTowards (vector: Vector, speed: number, stop: number): void {
     if (this.distance(vector) > stop) {
-      const unit = Vector.normalize(vector)
+      const unit = Vector.normalize(Vector.sub(vector, this))
       unit.mult(speed)
       this.add(unit)
     }
@@ -124,12 +124,13 @@ class Vector {
     return vector1.x * vector2.y - vector2.x * vector1.y
   }
 
-  static random (x: number, y: number): Vector {
-    if (Math.random() > 0.5) {
-      return new Vector(x * Math.random(), y * Math.random())
-    } else {
-      return new Vector(-x * Math.random(), -y * Math.random())
-    }
+  static random (x: number = 1, y: number = 1): Vector {
+    let s1 = 1
+    let s2 = 1
+    if (Math.random() > 0.5) s1 = -1
+    if (Math.random() > 0.5) s2 = -1
+    return new Vector(x * Math.random() * s1, y * Math.random() * s2)
+    
   }
 
   static randomPositive (x: number, y: number): Vector {
