@@ -104,7 +104,6 @@ for (let x = 0; x < NUMBER_PLANTS; x++) {
 
 for (let i = 0; i < NUMBER_VEGETARIANS; i++) {
   world.add(new Entity({
-    first: true,
     speedLimit: Math.random(),
     fertility: Math.random(),
     fieldVision: 100,

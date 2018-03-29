@@ -38,8 +38,12 @@ export default class Enviroment {
   }
 
   add (child) {
+<<<<<<< HEAD
     child.enviroment = this
 
+=======
+    child.environment = this
+>>>>>>> 54e9c8b47bfa54f4601d4032e2177b80bd6104b7
     if (child.vegetarian) {
       this.vegetarians.push(child)
     } else if (child.carnivore) {

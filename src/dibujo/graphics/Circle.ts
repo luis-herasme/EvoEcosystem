@@ -1,23 +1,23 @@
 
-import Graphic from './Graphic'
+import Graphic  from './Graphic'
 import Vector2D from '../Vector2D'
 
-export default class Circle extends Graphic {
-  public radius : number
-  public color  : string
-  public stroke : boolean
-  public lineColor : string
-  public lineWidth : number = 1
-  public fill   : boolean
+class Circle extends Graphic {
+  public radius    : number  = 5
+  public lineWidth : number  = 1
+  public color     : string  = '#FFF'
+  public lineColor : string  = '#000'
+  public stroke    : boolean = false
+  public fill      : boolean = true
 
   constructor (configuration) {
     super(configuration)
-    if (configuration.radius) this.radius = configuration.radius
-    if (configuration.color) this.color = configuration.color
-    if (configuration.stroke) this.stroke = configuration.stroke
     if (configuration.lineWidth) this.lineWidth = configuration.lineWidth
     if (configuration.lineColor) this.lineColor = configuration.lineColor
-    if (configuration.fill) this.fill = configuration.fill
+    if (configuration.radius)    this.radius    = configuration.radius
+    if (configuration.stroke)    this.stroke    = configuration.stroke
+    if (configuration.color)     this.color     = configuration.color
+    if (configuration.fill)      this.fill      = configuration.fill
   }
 
   onClick (func: Function): void {
@@ -34,9 +34,11 @@ export default class Circle extends Graphic {
 
   render (): void {
     this.context.beginPath()
-    this.context.fillStyle = this.color
-    this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI)
-    this.context.fill()
+    if (this.fill) {
+      this.context.fillStyle = this.color
+      this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI)
+      this.context.fill()
+    }
     if (this.stroke) {
       this.context.lineWidth = this.lineWidth
       this.context.strokeStyle = this.lineColor
@@ -44,3 +46,5 @@ export default class Circle extends Graphic {
     }
   }
 } 
+
+export default Circle

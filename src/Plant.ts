@@ -5,8 +5,13 @@ import * as dibujo from './dibujo/index'
 
 export default class Plant {
   public position   : Vector
+<<<<<<< HEAD
   public enviroment : Enviroment
   public size       : number = 3
+=======
+  public environment : Enviroment
+  public size       : number = 1
+>>>>>>> 54e9c8b47bfa54f4601d4032e2177b80bd6104b7
   public maxSize    : number = 5
   public circle
 
@@ -40,8 +45,12 @@ export default class Plant {
   }
 
   dead () {
+<<<<<<< HEAD
     this.enviroment.world.render.remove(this.circle)
     this.enviroment.remove(this)
+=======
+    this.environment.world.remove(this)
+>>>>>>> 54e9c8b47bfa54f4601d4032e2177b80bd6104b7
   }
 
   grow () {
@@ -49,8 +58,13 @@ export default class Plant {
   }
 
   haveChild () {
+<<<<<<< HEAD
     this.enviroment.world.addPlant(
       new Plant(Vector.add(this.position, Vector.random(this.size* 15, this.size * 15)))
+=======
+    this.environment.world.add(
+      new Plant(Vector.add(this.position, Vector.random(this.size* 5, this.size * 5)))
+>>>>>>> 54e9c8b47bfa54f4601d4032e2177b80bd6104b7
     )
   }
 }
